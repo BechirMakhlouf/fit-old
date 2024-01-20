@@ -20,7 +20,7 @@ const env: envType = {
 
 try {
   v.parse(envSchema, env);
-} catch (e: Error) {
+} catch (e) {
   console.error("environment variable invalid/missing.")
 }
 
