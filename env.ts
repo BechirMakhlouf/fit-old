@@ -5,6 +5,7 @@ const envSchema = v.object({
     DATABASE_HOST: v.string(),
     DATABASE_USERNAME: v.string(),
     DATABASE_PASSWORD: v.string(),
+    DATABASE_URL: v.string(),
   }),
 });
 
@@ -15,6 +16,7 @@ const env: envType = {
     DATABASE_HOST: process.env.DATABASE_HOST as string,
     DATABASE_USERNAME: process.env.DATABASE_USERNAME as string,
     DATABASE_PASSWORD: process.env.DATABASE_PASSWORD as string,
+    DATABASE_URL: process.env.DATABASE_URL as string,
   },
 };
 
