@@ -14,28 +14,40 @@ export class UserAuth {
     user: User,
   ): Promise<string> {
     try {
-    user.verifyInfo();
-    const { userId } = await this.auth.createUser({
-      key: {
-        providerId: user.credentials?.providerId as string,
-        providerUserId: user.credentials?.providerUserId as string,
-        password: user.credentials?.password as string,
-      },
-      attributes: {
-        first_name: user.firstName,
-        last_name: user.lastName,
-        username: user.userName,
-        birthday: formatDateForMySQL(user.birthday),
-        created_at: formatDateTimeForMySQL(user.created_at),
-        last_visited: formatDateTimeForMySQL(user.last_visited),
-      },
-    });
-    user._userId = userId;
-    return userId;
-
+      user.verifyInfo();
+      const { userId } = await this.auth.createUser({
+        key: {
+          providerId: user.credentials?.providerId as string,
+          providerUserId: user.credentials?.providerUserId as string,
+          password: user.credentials?.password as string,
+        },
+        attributes: {
+          first_name: user.firstName,
+          last_name: user.lastName,
+          username: user.userName,
+          birthday: formatDateForMySQL(user.birthday),
+          created_at: formatDateTimeForMySQL(user.created_at),
+          last_visited: formatDateTimeForMySQL(user.last_visited),
+        },
+      });
+      user._userId = userId;
+      return userId;
     } catch (e) {
-      throw new Error(`failed to register user: ${user}`)
+      throw new Error(`failed to register user: ${user}`);
     }
+  }
+  // async getId(): Promise<string> {
+  //   if (this._userId) return this._userId;
+  //   const id: string = await UserAuth.getUserIdFromCredentials(
+  //     this.credentials,
+  //   );
+  //   this._userId = id;
+  //   return this._userId;
+  // }
+  static async injectIdIntoUser(user: User): Promise<User> {
+    const id: string = await this.getUserIdFromCredentials(user.credentials);
+    user.userId = id;
+    return user;
   }
 
   static async getUserIdFromCredentials(
@@ -53,6 +65,7 @@ export class UserAuth {
       throw new Error("Couldn't find user id");
     }
   }
+
   static async getUserFromCredentials(
     userCredentials: UserCredentials,
   ): Promise<User> {

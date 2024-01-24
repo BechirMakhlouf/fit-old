@@ -5,6 +5,13 @@ import {
 } from "./userCredentialsSchema";
 import * as v from "valibot";
 
+interface BodyMeasurements {
+  arms: number[];
+  chest: number;
+  waist: number;
+  thighs: number[];
+}
+
 export class User {
   _userId: string | null = null;
   firstName: string;
@@ -14,6 +21,7 @@ export class User {
   created_at: Date;
   last_visited: Date;
   credentials: UserCredentials;
+  bodyMeasurements: BodyMeasurements = {} as BodyMeasurements;
   private schema = v.object({
     userId: v.optional(v.string([v.length(15)])),
     firstName: v.string([v.regex(/[^0-9]/g, "numbers aren't allowed")]),
@@ -43,6 +51,7 @@ export class User {
     created_at?: Date,
     last_visited?: Date,
     userId?: string,
+    bodyMeasurements?: BodyMeasurements,
   ) {
     this.firstName = firstName;
     this.lastName = lastName;
@@ -52,17 +61,20 @@ export class User {
     this.last_visited = last_visited ?? new Date();
     this.credentials = credentials;
     this._userId = userId ?? null;
+    this.bodyMeasurements = bodyMeasurements ?? {} as BodyMeasurements;
   }
 
-  async getId(): Promise<string> {
-    if (this._userId) return this._userId;
-    const id: string = await UserAuth.getUserIdFromCredentials(
-      this.credentials,
-    );
-    this._userId = id;
-    return this._userId;
+  // async getId(): Promise<string> {
+  //   if (this._userId) return this._userId;
+  //   const id: string = await UserAuth.getUserIdFromCredentials(
+  //     this.credentials,
+  //   );
+  //   this._userId = id;
+  //   return this._userId;
+  // }
+  set userId(id: string) {
+    this.userId = id
   }
-
   verifyInfo(): User {
     try {
       v.parse(this.schema, this);

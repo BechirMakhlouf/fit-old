@@ -5,6 +5,7 @@ import { handleAuth } from "@/app/actions";
 
 const AuthForm = () => {
   const [state, formAction] = useFormState(handleAuth, null);
+
   console.log(state);
   return (
     <form action={formAction}>
