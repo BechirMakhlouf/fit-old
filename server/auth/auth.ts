@@ -11,7 +11,7 @@ import env from "@/env";
 
 const connectionPool = mysql.createPool(env.DB.DATABASE_URL);
 
-export const auth = lucia({
+export const luciaAuth = lucia({
   adapter: mysql2(connectionPool, {
     user: "auth_user",
     key: "user_key",
@@ -22,4 +22,4 @@ export const auth = lucia({
   sessionCookie: { expires: false },
 });
 
-export type Auth = typeof auth;
+export type Auth = typeof luciaAuth;

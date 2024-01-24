@@ -7,4 +7,4 @@ const config = {
   password: env.DB.DATABASE_PASSWORD,
 };
 
-export const dbConnection = connect(config);
+export const db = connect(config);

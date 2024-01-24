@@ -6,9 +6,9 @@ declare namespace Lucia {
     first_name: string;
     last_name: string;
     username: string;
-    // birthday: any;
-    // created_at: any;
-    // last_visited: any;
+    birthday: string;
+    created_at: string;
+    last_visited: string;
   };
   type DatabaseSessionAttributes = {};
 }

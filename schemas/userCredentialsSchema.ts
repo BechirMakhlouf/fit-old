@@ -1,6 +1,6 @@
-import v from "valibot";
+import * as v from "valibot";
 
-const userCredentialsSchema = v.object({
+export const userCredentialsSchema = v.object({
   providerId: v.string([v.minLength(1)]),
   providerUserId: v.string([v.minLength(1)]),
   password: v.string([v.minLength(1)]),
