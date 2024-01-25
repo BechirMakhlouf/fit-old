@@ -1,32 +1,38 @@
-"use client";
-
-import AuthForm from "@/components/AuthForm";
+import { UserAuth } from "@/server/auth/userAuth";
 import { User } from "@/schemas/User";
 import { Session } from "lucia";
-import { UserAuth } from "@/server/auth/userAuth";
-import { useTheme } from "next-themes";
-//
-// const dummyUser: User = new User(
-//   "nelsdlfkjks",
-//   "ldkfjdslkd",
-//   "ldskjllsdkfjf",
-//   new Date("08-22-2000"),
-//   {
-//     providerId: "email",
-//     providerUserId: "anothertwo@noyi.com",
-//     password: "bayinoyi123",
-//   },
-// );
-//
-// dummyUser.getId().then((id) => console.log("id is :", id))
-// UserAuth.registerUser(dummyUser)
 
-export default function Home() {
-  const { theme, setTheme } = useTheme();
-  // setTheme("system");
-  // console.log(theme);
+export default async function Home() {
+  // const user: User = new User(
+  //   "bechir",
+  //   "makhlouf",
+  //   "bycharo",
+  //   new Date("07-22-2001"),
+  //   {
+  //     providerId: "email",
+  //     providerUserId: "bechirM@proton.me",
+  //     password: "bayinoyi123",
+  //   },
+  // );
+  // UserAuth.registerUser(user)
+
+  const dummySession: Session = {
+    user: { userId: "9mxv3q5lghrlute" },
+    sessionId: "jg0xlcvz8nstxow2y5e8vo2j04ndc0uno0mx8hie",
+    activePeriodExpiresAt: new Date("2024-01-26T13:47:18.951Z"),
+    idlePeriodExpiresAt: new Date("2024-02-09T13:47:18.951Z"),
+    state: "active",
+    fresh: false,
+  };
+
+  // const user: User = await UserAuth.getUserFromCredentials({
+  //   providerId: "email",
+  //   providerUserId: "bechirM@proton.me",
+  //   password: "bayinoyi123",
+  // });
   return (
     <>
+      <h1>Home.</h1>
     </>
   );
 }

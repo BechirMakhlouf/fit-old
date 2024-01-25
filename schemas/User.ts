@@ -1,9 +1,9 @@
-import { UserAuth } from "@/server/auth/userAuth";
+import * as v from "valibot";
+
 import {
   UserCredentials,
-  userCredentialsSchema,
 } from "./userCredentialsSchema";
-import * as v from "valibot";
+import { userSchema } from "./userSchema";
 
 interface BodyMeasurements {
   arms: number[];
@@ -22,25 +22,7 @@ export class User {
   last_visited: Date;
   credentials: UserCredentials;
   bodyMeasurements: BodyMeasurements = {} as BodyMeasurements;
-  private schema = v.object({
-    userId: v.optional(v.string([v.length(15)])),
-    firstName: v.string([v.regex(/[^0-9]/g, "numbers aren't allowed")]),
-    lastName: v.string([v.regex(/[^0-9]/g, "numbers aren't allowed")]),
-    userName: v.string([v.minLength(3)]),
-    birthday: v.optional(
-      v.date([v.minValue(new Date("01-01-1900")), v.maxValue(new Date())]),
-    ),
-    // !! replace these static values
-    created_at: v.optional(v.date([
-      v.minValue(new Date("01-01-2024")),
-      v.maxValue(new Date()),
-    ])),
-    last_visited: v.optional(v.date([
-      v.minValue(new Date("01-01-2024")),
-      v.maxValue(new Date()),
-    ])),
-    credentials: v.optional(userCredentialsSchema),
-  });
+  static schema = userSchema;
 
   constructor(
     firstName: string,
@@ -72,16 +54,18 @@ export class User {
   //   this._userId = id;
   //   return this._userId;
   // }
+
   set userId(id: string) {
-    this.userId = id
+    this.userId = id;
   }
+
+  get userId() {
+    return this._userId || "";
+  }
+
   verifyInfo(): User {
-    try {
-      v.parse(this.schema, this);
-      return this;
-    } catch (e) {
-      throw new Error(`user validation failed. ${(e as Error).message}`);
-    }
+    v.parse(User.schema, this);
+    return this;
   }
 
   updateLastVisited(date: Date = new Date()): User {
